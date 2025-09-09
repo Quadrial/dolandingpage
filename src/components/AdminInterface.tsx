@@ -1,11 +1,5 @@
-
-
 import { useState, useEffect, useRef } from "react";
-import {
-  Client,
-  Dm,
-  DecodedMessage,
-} from "@xmtp/browser-sdk";
+import { Client, Dm, DecodedMessage } from "@xmtp/browser-sdk";
 
 interface AdminInterfaceProps {
   client: Client;
@@ -44,8 +38,10 @@ function AdminInterface({ client }: AdminInterfaceProps) {
   // Load conversations and live stream updates
   useEffect(() => {
     let alive = true;
+
     const setup = async () => {
       try {
+        // 1. Initial load
         const all = await client.conversations.list();
         for (const conv of all) {
           if (!(conv instanceof Dm)) continue;
@@ -63,7 +59,7 @@ function AdminInterface({ client }: AdminInterfaceProps) {
             return m;
           });
 
-          // stream new messages
+          // 2. Stream existing messages
           (async () => {
             const stream = await conv.stream();
             for await (const item of stream) {
@@ -84,11 +80,57 @@ function AdminInterface({ client }: AdminInterfaceProps) {
             }
           })();
         }
+
+        // 3. 🔴 WATCH for brand new conversations
+        (async () => {
+          const convStream = await client.conversations.stream();
+          for await (const newConv of convStream) {
+            if (!alive || !(newConv instanceof Dm)) continue;
+
+            const peer = await newConv.peerInboxId();
+            const msgs = (await newConv.messages()).filter(isDecodedMessage);
+
+            setConversations((prev) => {
+              const m = new Map(prev);
+              if (!m.has(newConv.id)) {
+                m.set(newConv.id, {
+                  dm: newConv,
+                  messages: msgs,
+                  userAddress: peer,
+                  lastMessage: msgs.at(-1),
+                });
+              }
+              return m;
+            });
+
+            // start streaming this new conversation too
+            (async () => {
+              const stream = await newConv.stream();
+              for await (const item of stream) {
+                if (!alive) break;
+                if (!isDecodedMessage(item)) continue;
+                setConversations((prev) => {
+                  const m = new Map(prev);
+                  const ex = m.get(newConv.id);
+                  if (ex && !ex.messages.some((mg) => mg.id === item.id)) {
+                    m.set(newConv.id, {
+                      ...ex,
+                      messages: [...ex.messages, item],
+                      lastMessage: item,
+                    });
+                  }
+                  return m;
+                });
+              }
+            })();
+          }
+        })();
       } catch (e) {
         console.error("Admin load error:", e);
         if (alive) setError("Failed to load conversations.");
       }
     };
+
     setup();
     return () => {
       alive = false;
