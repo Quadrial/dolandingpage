@@ -23,9 +23,10 @@ const Header: React.FC<HeaderProps> = ({ address, onConnect }) => {
       transition={{ duration: 0.5 }}
       className="bg-white shadow-md fixed top-0 left-0 right-0 z-50"
     >
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div className="container mx-auto px-10 py-3 flex justify-between items-center">
         <div className="flex items-center">
-          <span className="text-2xl font-bold text-blue-600">DOMAIN.</span>
+          <img src="/images/logo.png" alt="DOMAIN." className="w-16 h-16  " />
+          {/* <span className="text-2xl font-bold text-blue-600">DOMAIN.</span> */}
         </div>
 
         {/* Desktop Nav */}

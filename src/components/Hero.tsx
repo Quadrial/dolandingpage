@@ -50,7 +50,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="mt-20 py-16 relative bg-[url('/images/bg0.jpg')] bg-cover bg-center bg-no-repeat">
+    <section className="mt-30 py-16 relative bg-[url('/images/bg0.jpg')] bg-cover bg-center bg-no-repeat">
       <div className="absolute inset-0 bg-blue-900 opacity-70"></div>
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
