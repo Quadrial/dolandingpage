@@ -1,0 +1,40 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+/* src/index.css */
+
+:root {
+  --color-primary: #3b82f6;
+  --color-secondary: #10b981;
+  --color-dark: #1f2937;
+  --color-light: #f9fafb;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.domain-card {
+  transition: all 0.3s ease;
+}
+
+.domain-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.search-box {
+  box-shadow: 0 10px 35px -10px rgba(59, 130, 246, 0.3);
+}
+
+.promo-card {
+  transition: all 0.3s ease;
+}
+
+.promo-card:hover {
+  transform: scale(1.02);
+}
