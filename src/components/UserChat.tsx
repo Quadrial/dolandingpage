@@ -11,6 +11,7 @@ import {
 interface UserChatProps {
   client: Client;
   adminAddress: string;
+  onUnreadChange: (count: number) => void;
 }
 
 function isDecodedMessage(item: any): item is DecodedMessage {
@@ -24,7 +25,7 @@ function isDecodedMessage(item: any): item is DecodedMessage {
   );
 }
 
-export default function UserChat({ client, adminAddress }: UserChatProps) {
+export default function UserChat({ client, adminAddress, onUnreadChange }: UserChatProps) {
   const [conversation, setConversation] = useState<Dm | null>(null);
   const [messages, setMessages] = useState<DecodedMessage[]>([]);
   const [message, setMessage] = useState("");
@@ -32,6 +33,21 @@ export default function UserChat({ client, adminAddress }: UserChatProps) {
   const [error, setError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const [lastOpened, setLastOpened] = useState(Date.now());
+
+  useEffect(() => {
+    onUnreadChange(0);
+    setLastOpened(Date.now());
+  }, []);
+
+  useEffect(() => {
+    const unreadCount = messages.filter(
+      (msg) =>
+        client.inboxId && !msg.senderInboxId.toLowerCase().includes(client.inboxId.toLowerCase()) &&
+        new Date(Number(msg.sentAtNs / 1000000n)) > new Date(lastOpened)
+    ).length;
+    onUnreadChange(unreadCount);
+  }, [messages, lastOpened, onUnreadChange, client.inboxId]);
 
   // Setup DM with Admin when client ready
   useEffect(() => {
