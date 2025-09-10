@@ -15,7 +15,7 @@ import { Client } from "@xmtp/browser-sdk";
 import { type WalletClient } from "viem";
 import { createWalletSigner } from "./utils/walletSigner";
 
-const ADMIN_ADDRESS = "0x1dcb5a1c5fa7571860926ff8f09ea959c49d3461";
+const ADMIN_ADDRESS = import.meta.env.VITE_ADMIN_ADDRESS;
 
 function App() {
   const [walletClient, setWalletClient] = useState<WalletClient | null>(null);

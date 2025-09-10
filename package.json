@@ -16,6 +16,7 @@
     "@xmtp/browser-sdk": "^4.1.0",
     "@xmtp/wasm-bindings": "^1.4.0",
     "buffer": "^6.0.3",
+    "dotenv": "^17.2.2",
     "ethers": "^6.15.0",
     "framer-motion": "^12.23.12",
     "react": "^19.1.1",
