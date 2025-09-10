@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import domains from "../data/domains.json";
+import { FaCommentDots } from "react-icons/fa";
 
 const tabsData = [
   {
@@ -125,6 +126,7 @@ const DomainSearch = ({
                     </p>
                     <p className="text-gray-600">{`${domain.price}`} ETH</p>
                   </div>
+
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -133,7 +135,14 @@ const DomainSearch = ({
                       onNegotiate(domain.name, `${domain.price} ETH`)
                     }
                   >
-                    Chat to Negotiate
+                    <FaCommentDots />
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition"
+                  >
+                    Add to Cart
                   </motion.button>
                 </motion.div>
               ))}
