@@ -13,6 +13,7 @@ interface ChatWidgetProps {
   adminAddress: string;
   isAdmin?: boolean; // Add optional isAdmin prop
   onUnreadChange: (count: number) => void;
+  prefillMessage?: string;
 }
 
 const ChatWidget: React.FC<ChatWidgetProps> = ({
@@ -23,6 +24,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({
   adminAddress,
   isAdmin: isAdminProp, // Rename to avoid conflict
   onUnreadChange,
+  prefillMessage,
 }) => {
   if (!isOpen) return null;
 
@@ -63,7 +65,12 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({
           isAdmin ? (
             <AdminInterface client={client} onUnreadChange={onUnreadChange} />
           ) : (
-            <UserChat client={client} adminAddress={adminAddress} onUnreadChange={onUnreadChange} />
+            <UserChat
+              client={client}
+              adminAddress={adminAddress}
+              onUnreadChange={onUnreadChange}
+              prefillMessage={prefillMessage}
+            />
           )
         ) : (
           <div className="w-full flex items-center justify-center text-gray-500 p-4">

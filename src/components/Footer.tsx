@@ -1,4 +1,3 @@
-
 import {
   FaTwitter,
   FaDiscord,
@@ -165,7 +164,7 @@ const Footer = () => {
           transition={{ delay: 0.5, duration: 0.5 }}
           className="border-t border-gray-700 mt-8 pt-8 text-center"
         >
-          <p>&copy; 2023 DOMAIN. All rights reserved.</p>
+          <p>&copy; 2025 TRIDOMAIN All rights reserved.</p>
         </motion.div>
       </div>
     </motion.footer>

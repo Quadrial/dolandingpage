@@ -1,5 +1,3 @@
-
-
 import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
@@ -25,6 +23,7 @@ function App() {
   const [client, setClient] = useState<Client | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [unread, setUnread] = useState(0);
+  const [prefillMessage, setPrefillMessage] = useState<string | undefined>();
 
   const onConnect = async (wc: WalletClient) => {
     setWalletClient(wc);
@@ -43,13 +42,18 @@ function App() {
     initXMTP();
   }, [walletClient, address]);
 
+  const handleNegotiate = (name: string, price: string) => {
+    setPrefillMessage(`Hi, I’d like to negotiate for ${name} at ${price}.`);
+    setIsChatOpen(true);
+  };
+
   return (
     <div className="App bg-gray-50 min-h-screen">
       {/* Landing content */}
       <Header address={address} onConnect={onConnect} />
-      <Hero />
-      <DomainSearch />
-      <FeaturedDomains />
+      <Hero onNegotiate={handleNegotiate} />
+      <DomainSearch onNegotiate={handleNegotiate} />
+      <FeaturedDomains onNegotiate={handleNegotiate} />
       <Promotions />
       <Features />
       <Testimonials />
@@ -78,6 +82,7 @@ function App() {
         address={address}
         adminAddress={ADMIN_ADDRESS}
         onUnreadChange={setUnread}
+        prefillMessage={prefillMessage}
       />
     </div>
   );
